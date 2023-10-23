@@ -25,8 +25,15 @@ tasks:
     - artisan:view:cache
     - artisan:config:cache
     - artisan:config:clear
+    # - artisan:migrate
+    - npm:install
+    - npm:build
     - deploy:publish
     - php-fpm:reload
     - deploy:unlock
+  npm:install:
+    - run: 'cd {{release_path}} && source $HOME/.nvm/nvm.sh && npm install'
+  npm:build:
+    - run: 'cd {{release_path}} && source $HOME/.nvm/nvm.sh && npm run build'
 after:
   deploy:failed: deploy:unlock

@@ -1,0 +1,32 @@
+import:
+  - recipe/laravel.php
+  - contrib/php-fpm.php
+
+config:
+  application: 'nnoc-nail'
+  repository: 'git@github.com:thientran98qb/nnoc-nail.git'
+  php_fpm_version: '8.2'
+  keep_releases: 5
+  shared_files: ['.env']
+
+hosts:
+  stg:
+    hostname: 13.212.49.158
+    remote_user: ubuntu
+    deploy_path: '/var/www/nnoc-nail'
+    forward_agent: true
+    identity_file: '~/.ssh/nnoc-nail.pem'
+
+tasks:
+  deploy:
+    - deploy:prepare
+    - deploy:vendors
+    - artisan:storage:link
+    - artisan:view:cache
+    - artisan:config:cache
+    - artisan:config:clear
+    - deploy:publish
+    - php-fpm:reload
+    - deploy:unlock
+after:
+  deploy:failed: deploy:unlock

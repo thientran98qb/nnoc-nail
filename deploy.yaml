@@ -11,7 +11,7 @@ config:
 
 hosts:
   stg:
-    hostname: 13.212.49.158
+    hostname: 13.212.241.36
     remote_user: ubuntu
     deploy_path: '/var/www/nnoc-nail'
     forward_agent: true
